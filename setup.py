@@ -8,7 +8,7 @@ setup(
   author = 'Malcolm van Raalte',                   # Type in your name
   author_email = 'malcolm@van.raalte.ca',      # Type in your E-Mail
   url = 'https://github.com/malcolmvr/backbone_network',   # Provide either the link to your github or to your website
-  download_url = 'https://github.com/malcolmvr/backbone_network/archive/v1.1.1.tar.gz',    # I explain this later on
+  download_url = 'https://github.com/malcolmvr/backbone_network/archive/v1.1.2.tar.gz',    # I explain this later on
   keywords = ['network', 'backbone', 'multiscale', 'serrano et al. 2009'],   # Keywords that define your package best
   install_requires=[            # I get to this in a second
     'networkx',
