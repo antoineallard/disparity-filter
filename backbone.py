@@ -89,7 +89,7 @@ def compute_disparity_filter_undirected(G, weight='weight'):
     return B
 
 
-def apply_disparity_filter(G, alpha_t=0.4, cut_mode='or'):
+def apply_disparity_filter(G, alpha_t=0.8, cut_mode='or'):
     ''' Performs a cut of the graph previously filtered through the disparity_filter function.
 
         Args
@@ -120,7 +120,7 @@ def apply_disparity_filter(G, alpha_t=0.4, cut_mode='or'):
            apply_disparity_filter_undirected(G, alpha_t)
 
 
-def apply_disparity_filter_directed(G, alpha_t=0.4, cut_mode='or'):
+def apply_disparity_filter_directed(G, alpha_t=0.8, cut_mode='or'):
     '''See the docstring for the `apply_disparity_filter` function.'''
     B = nx.DiGraph()
     B.add_nodes_from(G.nodes(data=True))
@@ -145,7 +145,7 @@ def apply_disparity_filter_directed(G, alpha_t=0.4, cut_mode='or'):
     return B
 
 
-def apply_disparity_filter_undirected(G, alpha_t=0.4):
+def apply_disparity_filter_undirected(G, alpha_t=0.8):
     '''See the docstring for the `apply_disparity_filter` function.'''
     B = nx.Graph()
     B.add_nodes_from(G.nodes(data=True))
