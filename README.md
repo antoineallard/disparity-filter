@@ -1,15 +1,23 @@
-python-backbone-network
+backbone_network
 =======================
+Takes a NetworkX graph and removes edges to create a "backbone" graph. For more information about this method see the referenced article.
 
-Compute a significance score (alpha) of edge weights in networks using the disparity filter (Serrano et al. 2009).
+Installation
+-----
+pip install backbone_network
 
+Usage
+-----
+```
+from backbone_network import get_graph_backbone
+graph_backbone = get_graph_backbone(graph)
+```
 
 Dependencies
 ------------
 * Numpy 1.8.0
 * Scipy 0.11.0
 * NetworkX 1.8.1
-
 
 References
 ----------
