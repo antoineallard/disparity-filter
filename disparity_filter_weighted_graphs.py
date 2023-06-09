@@ -44,7 +44,7 @@ def compute_alpha_directed(G, weight):
                 p_ij_out = float(absolute(w))/sum_w_out
                 # alpha_ij_out = 1 - (k_out-1) * integrate.quad(lambda x: (1-x)**(k_out-2), 0, p_ij_out)[0] # pylint: disable=cell-var-from-loop
                 alpha_ij_out = power(1 - p_ij_out, k_out - 1)
-                N.add_edge(u, v, alpha_out=float('%.4f' % alpha_ij_out))
+                N.add_edge(u, v, alpha_out=float('{:.4f}'.format(alpha_ij_out)))
                 N[u][v].update(G[u][v])
 
         elif k_out == 1 and G.in_degree(list(G.successors(u))[0]) == 1:
@@ -66,7 +66,7 @@ def compute_alpha_directed(G, weight):
                 p_ij_in = float(absolute(w))/sum_w_in
                 # alpha_ij_in = 1 - (k_in-1) * integrate.quad(lambda x: (1-x)**(k_in-2), 0, p_ij_in)[0] # pylint: disable=cell-var-from-loop
                 alpha_ij_in = power(1 - p_ij_in, k_in - 1)
-                N.add_edge(v, u, alpha_in=float('%.4f' % alpha_ij_in))
+                N.add_edge(v, u, alpha_in=float('{:.4f}'.format(alpha_ij_in)))
                 N[v][u].update(G[v][u])
 
         elif k_in == 1:
@@ -95,15 +95,26 @@ def compute_alpha_undirected(G, weight):
                 # alpha_ij = 1 - (k-1) * integrate.quad(lambda x: (1-x)**(k-2), 0, p_ij)[0] # pylint: disable=cell-var-from-loop
                 alpha_ij = power(1 - p_ij, k - 1)
                 try:
-                    alpha = G[u][v]['alpha']
+                    alpha = B[v][u]['alpha']
                 except KeyError:
+                    # print(u,v)
                     alpha = 1
-                B.add_edge(u, v, alpha=float('%.4f' % min([alpha, alpha_ij])))
+                B.add_edge(u, v, alpha=float('{:.4f}'.format(min([alpha, alpha_ij]))))
                 B[u][v].update(G[u][v])
+
+        elif k == 1 and G.degree(list(G[u])[0]) == 1:
+            # we need to keep the connection as it is the only way to maintain the connectivity of the network
+            v = list(G[u])[0]
+            N.add_edge(u, v, alpha=0.)
+            N[u][v].update(G[u][v])
 
         elif k == 1:
             for v in G[u]:
-                B.add_edge(u, v, alpha=1.)
+                try:
+                    alpha = G[v][u]['alpha']
+                except KeyError:
+                    alpha = 1
+                B.add_edge(u, v, alpha=float('{:.4f}'.format(min([alpha, 1]))))
                 B[u][v].update(G[u][v])
 
     return B
