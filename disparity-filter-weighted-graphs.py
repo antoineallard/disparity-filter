@@ -17,7 +17,7 @@ def compute_disparity_filter(G, weight='weight'):
         Returns
             Weighted graph with a significance score (alpha) assigned to each edge
         References
-            M. A. Serrano et al. (2009) Extracting the Multiscale backbone of complex weighted networks. PNAS, 106:16, pp. 6483-6488.
+            M. A. Serrano et al. (2009) Extracting the multiscale backbone of complex weighted networks. PNAS, 106:16, pp. 6483-6488.
     '''
     return compute_disparity_filter_directed(G, weight) \
            if nx.is_directed(G) else \
@@ -38,7 +38,8 @@ def compute_disparity_filter_directed(G, weight='weight'):
             for v in G.successors(u):
                 w = G[u][v][weight]
                 p_ij_out = float(np.absolute(w))/sum_w_out
-                alpha_ij_out = 1 - (k_out-1) * integrate.quad(lambda x: (1-x)**(k_out-2), 0, p_ij_out)[0] # pylint: disable=cell-var-from-loop
+                # alpha_ij_out = 1 - (k_out-1) * integrate.quad(lambda x: (1-x)**(k_out-2), 0, p_ij_out)[0] # pylint: disable=cell-var-from-loop
+                alpha_ij_out = np.power(1 - p_ij_out, k_out - 1)
                 N.add_edge(u, v, alpha_out=float('%.4f' % alpha_ij_out))
                 N[u][v].update(G[u][v])
 
@@ -54,7 +55,8 @@ def compute_disparity_filter_directed(G, weight='weight'):
             for v in G.predecessors(u):
                 w = G[v][u][weight]
                 p_ij_in = float(np.absolute(w))/sum_w_in
-                alpha_ij_in = 1 - (k_in-1) * integrate.quad(lambda x: (1-x)**(k_in-2), 0, p_ij_in)[0] # pylint: disable=cell-var-from-loop
+                # alpha_ij_in = 1 - (k_in-1) * integrate.quad(lambda x: (1-x)**(k_in-2), 0, p_ij_in)[0] # pylint: disable=cell-var-from-loop
+                alpha_ij_in = np.power(1 - p_ij_in, k_in - 1)
                 N.add_edge(v, u, alpha_in=float('%.4f' % alpha_ij_in))
                 N[v][u].update(G[v][u])
     return N
@@ -71,7 +73,8 @@ def compute_disparity_filter_undirected(G, weight='weight'):
             for v in G[u]:
                 w = G[u][v][weight]
                 p_ij = float(np.absolute(w))/sum_w
-                alpha_ij = 1 - (k-1) * integrate.quad(lambda x: (1-x)**(k-2), 0, p_ij)[0] # pylint: disable=cell-var-from-loop
+                # alpha_ij = 1 - (k-1) * integrate.quad(lambda x: (1-x)**(k-2), 0, p_ij)[0] # pylint: disable=cell-var-from-loop
+                alpha_ij = np.power(1 - p_ij, k - 1)
                 B.add_edge(u, v, alpha=float('%.4f' % alpha_ij))
                 B[u][v].update(G[u][v])
     return B
@@ -101,7 +104,7 @@ def apply_disparity_filter(G, alpha_t=0.8, cut_mode='or'):
 
         References
         ---------
-        .. M. A. Serrano et al. (2009) Extracting the Multiscale backbone of complex weighted networks. PNAS, 106:16, pp. 6483-6488.
+        .. M. A. Serrano et al. (2009) Extracting the multiscale backbone of complex weighted networks. PNAS, 106:16, pp. 6483-6488.
     '''
     return apply_disparity_filter_directed(G, alpha_t, cut_mode) \
            if nx.is_directed(G) else \
