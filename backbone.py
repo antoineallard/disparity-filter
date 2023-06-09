@@ -1,15 +1,3 @@
-'''
-This module implements the disparity filter to compute a significance score of edge weights in networks.
-Forked from: https://github.com/aekpalakorn/python-backbone-network/blob/master/backbone.py
-With the following changes:
- - formatted to pylint standards
- - architected as a module with no code that runs on load
- - broke large functions into smaller ones
- - copy all nodes so that completely disconnected nodes aren't removed and so that node attributes are not removed
- - copy all the original edge attributes so that they are not removed
- - bug fix: changed G.in_degree(G.successors(u)[0]) to G.in_degree(list(G.successors(u))[0])
-'''
-
 import networkx as nx
 import numpy as np
 from scipy import integrate
