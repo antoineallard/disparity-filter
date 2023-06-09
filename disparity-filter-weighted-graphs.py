@@ -1,6 +1,6 @@
 import networkx as nx
 import numpy as np
-from scipy import integrate
+
 
 
 def get_graph_backbone(G, alpha_t=0.8):
@@ -44,11 +44,16 @@ def compute_disparity_filter_directed(G, weight='weight'):
                 N[u][v].update(G[u][v])
 
         elif k_out == 1 and G.in_degree(list(G.successors(u))[0]) == 1:
-            #we need to keep the connection as it is the only way to maintain the connectivity of the network
+            # we need to keep the connection as it is the only way to maintain the connectivity of the network
             v = list(G.successors(u))[0]
             N.add_edge(u, v, alpha_out=0., alpha_in=0.)
             N[u][v].update(G[u][v])
-            #there is no need to do the same for the k_in, since the link is built already from the tail
+            # there is no need to do the same for the k_in, since the link is built already from the tail
+
+        elif k_out == 1:
+            for v in G.successors(u):
+                N.add_edge(u, v, alpha_out=1.)
+                N[u][v].update(G[u][v])
 
         if k_in > 1:
             sum_w_in = sum(np.absolute(G[v][u][weight]) for v in G.predecessors(u))
@@ -59,6 +64,12 @@ def compute_disparity_filter_directed(G, weight='weight'):
                 alpha_ij_in = np.power(1 - p_ij_in, k_in - 1)
                 N.add_edge(v, u, alpha_in=float('%.4f' % alpha_ij_in))
                 N[v][u].update(G[v][u])
+
+        elif k_in == 1:
+            for v in G.predecessors(u):
+                N.add_edge(v, u, alpha_in=1.)
+                N[v][u].update(G[v][u])
+
     return N
 
 
@@ -75,7 +86,15 @@ def compute_disparity_filter_undirected(G, weight='weight'):
                 p_ij = float(np.absolute(w))/sum_w
                 # alpha_ij = 1 - (k-1) * integrate.quad(lambda x: (1-x)**(k-2), 0, p_ij)[0] # pylint: disable=cell-var-from-loop
                 alpha_ij = np.power(1 - p_ij, k - 1)
-                B.add_edge(u, v, alpha=float('%.4f' % alpha_ij))
+                try:
+                    alpha = G[u][v]['alpha']
+                except KeyError:
+                    alpha = 1
+                B.add_edge(u, v, alpha=float('%.4f' % min([alpha, alpha_ij])))
+                B[u][v].update(G[u][v])
+        elif k == 1:
+            for v in G[u]:
+                B.add_edge(u, v, alpha=1.)
                 B[u][v].update(G[u][v])
     return B
 
@@ -116,14 +135,14 @@ def apply_disparity_filter_directed(G, alpha_t=0.8, cut_mode='or'):
     B = nx.DiGraph()
     B.add_nodes_from(G.nodes(data=True))
     for u, v, w in G.edges(data=True):
-        try:
-            alpha_in = w['alpha_in']
-        except KeyError: #there is no alpha_in, so we assign 1. It will never pass the cut
-            alpha_in = 1
-        try:
-            alpha_out = w['alpha_out']
-        except KeyError: #there is no alpha_out, so we assign 1. It will never pass the cut
-            alpha_out = 1
+        # try:
+        alpha_in = w['alpha_in']
+        # except KeyError: #there is no alpha_in, so we assign 1. It will never pass the cut
+        #     alpha_in = 1
+        # try:
+        alpha_out = w['alpha_out']
+        # except KeyError: #there is no alpha_out, so we assign 1. It will never pass the cut
+        #     alpha_out = 1
 
         if cut_mode == 'or':
             if alpha_in < alpha_t or alpha_out < alpha_t:
@@ -142,10 +161,10 @@ def apply_disparity_filter_undirected(G, alpha_t=0.8):
     B.add_nodes_from(G.nodes(data=True))
     for u, v, w in G.edges(data=True):
 
-        try:
-            alpha = w['alpha']
-        except KeyError: #there is no alpha, so we assign 1. It will never pass the cut
-            alpha = 1
+        # try:
+        alpha = w['alpha']
+        # except KeyError: #there is no alpha, so we assign 1. It will never pass the cut
+        #     alpha = 1
 
         if alpha < alpha_t:
             B.add_edge(u, v)
