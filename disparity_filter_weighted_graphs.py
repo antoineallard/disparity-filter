@@ -301,4 +301,3 @@ def plot_optimal_alpha(G):
 
     else:
         raise KeyError('No illustration has been implemented for this filtering method yet.')
-
