@@ -33,6 +33,6 @@ backbone = dfil.filter_graph(graph)
 
 ## Reference
 
-Extracting the multiscale backbone of complex weighted networks<br>
-M. Ángeles Serrano, Marián Boguñá, and Alessandro Vespignani<br>
+*Extracting the multiscale backbone of complex weighted networks*<br>
+M. Á. Serrano, M. Boguñá and A. Vespignani<br>
 [Proc. Natl. Acad. Sci. U.S.A. 106, 6483-6488 (2009)](https://doi.org/10.1073/pnas.0808904106)
