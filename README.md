@@ -21,7 +21,7 @@ dfil.compute_alpha(graph)
 
 # Find the optimal value for alpha. The dataframe used to find the optimal
 #   value for alpha is saved to `finding_optimal_alpha.csv.zip`.
-dfil.find_optimal_alpha(graph, save_optimal_alpha_data=True)
+dfil.find_optimal_alpha(graph, save_optimal_alpha_data=True, method='elbow')
 
 # Plot the position of the optimal value for alpha.
 dfil.plot_optimal_alpha(graph)
