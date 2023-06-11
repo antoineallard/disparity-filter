@@ -23,7 +23,7 @@ def compute_alpha(G, weight='weight'):
 
         References
         ----------
-        .. M. A. Serrano et al. (2009) Extracting the multiscale backbone of complex weighted networks. PNAS, 106:16, pp. 6483-6488.
+        .. M. Á. Serrano, M. Boguñá and A. Vespignani. Extracting the multiscale backbone of complex weighted networks. Proc. Natl. Acad. Sci. U.S.A. 106, 6483-6488 (2009)
     '''
     if _is_directed(G):
         _compute_alpha_directed(G, weight)
@@ -128,7 +128,7 @@ def filter_graph(G, alpha_t=None, cut_mode='or'):
 
         Reference
         ---------
-        .. M. A. Serrano et al. (2009) Extracting the multiscale backbone of complex weighted networks. PNAS, 106:16, pp. 6483-6488.
+        .. M. Á. Serrano, M. Boguñá and A. Vespignani. Extracting the multiscale backbone of complex weighted networks. Proc. Natl. Acad. Sci. U.S.A. 106, 6483-6488 (2009)
     '''
     if _is_directed(G):
         return _filter_graph_directed(G, alpha_t, cut_mode)
@@ -203,7 +203,7 @@ def find_optimal_alpha(G, save_optimal_alpha_data=False, method='elbow'):
 
         Reference
         ---------
-        .. M. A. Serrano et al. (2009) Extracting the multiscale backbone of complex weighted networks. PNAS, 106:16, pp. 6483-6488.
+        .. M. Á. Serrano, M. Boguñá and A. Vespignani. Extracting the multiscale backbone of complex weighted networks. Proc. Natl. Acad. Sci. U.S.A. 106, 6483-6488 (2009)
     '''
 
     def _remove_edge_and_count_vertices(x, g):
@@ -266,7 +266,7 @@ def plot_optimal_alpha(G):
 
         Reference
         ---------
-        .. M. A. Serrano et al. (2009) Extracting the multiscale backbone of complex weighted networks. PNAS, 106:16, pp. 6483-6488.
+        .. M. Á. Serrano, M. Boguñá and A. Vespignani. Extracting the multiscale backbone of complex weighted networks. Proc. Natl. Acad. Sci. U.S.A. 106, 6483-6488 (2009)
     '''
 
     try:
