@@ -5,7 +5,7 @@ Implementation of the disparity filter from [Serrano et al.](https://doi.org/10.
 
 ### Usage
 
-The original graph must be a [NetworkX](https://networkx.org/) `Graph` of `DiGraph` object.
+The original graph must be a `Graph` or `DiGraph` object from [NetworkX](https://networkx.org/) .
 
 The optimal value for `alpha` corresponds to the threshold that minimizes the number of edges while maximizing the number of vertices. Use `plot_optimal_alpha()` to obtain an illustration.
 
