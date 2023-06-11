@@ -1,9 +1,10 @@
 ## Version 1.0 (currently under development)
 
-- removed the module
+- removed the module architecture to keep it simple
 - now uses the analytic expression instead of numerical integration
 - corrected a mistake where the second alpha_ij overwrites the first one in undirected graphs
 - now adds the alpha values to the original graph as edge attributes instead of creating a new graph
+- added functions to compute the optimal alpha and to plot an illustration of the calculation
 
 
 ## Version 0.9

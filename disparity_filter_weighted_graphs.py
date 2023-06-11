@@ -11,14 +11,6 @@ from pandas import concat as _concat
 
 
 
-def get_graph_backbone(G, alpha_t=0.8):
-    '''Gets the backbone of a given graph `G`.'''
-    G_disp = compute_alpha(G)
-    G_backbone = filter_graph(G_disp, alpha_t, cut_mode='or')
-    return G_backbone
-
-
-
 def compute_alpha(G, weight='weight'):
     ''' Compute significance scores (alpha) for weighted edges in G as defined in Serrano et al. 2009
         Args
@@ -139,7 +131,7 @@ def _compute_alpha_undirected(G, weight):
 
 
 
-def filter_graph(G, alpha_t=0.8, cut_mode='or'):
+def filter_graph(G, alpha_t=None, cut_mode='or'):
     ''' Performs a cut of the graph previously filtered through the disparity_filter function.
 
         Args
@@ -174,6 +166,10 @@ def filter_graph(G, alpha_t=0.8, cut_mode='or'):
 
 def _filter_graph_directed(G, alpha_t, cut_mode='or'):
     '''See the docstring for the `filter_graph` function.'''
+
+    if alpha_t == None:
+        alpha_t = G.graph['optimal_alpha']
+
     B = _DiGraph()
     B.add_nodes_from(G.nodes(data=True))
 
@@ -212,13 +208,15 @@ def _filter_graph_undirected(G, alpha_t):
     return B
 
 
+
 def _remove_edge_and_count_vertices(x, g):
     g.remove_edge(x.v_source, x.v_target)
     g.remove_nodes_from(list(_isolates(g)))
     return g.number_of_nodes()
 
 
-def find_optimal_threshold(graph):
+
+def find_optimal_alpha(graph, save_optimal_alpha_data=False):
     graph_copy = graph.copy()
 
     nb_vertices = graph.number_of_nodes()
@@ -249,16 +247,23 @@ def find_optimal_threshold(graph):
     df.reset_index(drop=True, inplace=True)
 
     idx = df['dist_to_diagonal'].idxmax()
+    graph.graph['optimal_alpha_data_index'] = idx
     alpha_t = df.iloc[idx]['alpha']
+    graph.graph['optimal_alpha'] = alpha_t
 
-    df.to_csv('finding_optimal_threshold.csv.zip', compression='zip')
+    graph.graph['optimal_alpha_data'] = df
 
-    return alpha_t, idx, df
+    if save_optimal_alpha_data:
+        df.to_csv('finding_optimal_alpha.csv.zip', compression='zip')
 
 
-def plot_optimal_threshold(df, idx):
+
+def plot_optimal_alpha(graph):
     import seaborn as sns
     sns.set_theme(style="ticks", palette="deep")
+
+    df = graph.graph['optimal_alpha_data']
+    idx = graph.graph['optimal_alpha_data_index']
 
     x_elbow = df.iloc[idx]['Remaining fraction of edges']
     y_elbow = df.iloc[idx]['Remaining fraction of vertices']
@@ -274,5 +279,4 @@ def plot_optimal_threshold(df, idx):
 
     ax.set_aspect('equal')
     sns.despine(ax=ax)
-    ax.get_figure().savefig('finding_optimal_threshold.pdf')
-
+    ax.get_figure().savefig('finding_optimal_alpha.pdf')
