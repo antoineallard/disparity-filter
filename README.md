@@ -1,9 +1,9 @@
-## Disparity filter for weighted graphs
+# Disparity filter for weighted graphs
 
 Implementation of the disparity filter from [Serrano et al.](https://doi.org/10.1073/pnas.0808904106) to extract the backbone of a weighted graph.
 
 
-### Usage
+## Usage
 
 The original graph must be a `Graph` or `DiGraph` object from [NetworkX](https://networkx.org/) .
 
