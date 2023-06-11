@@ -7,7 +7,7 @@ Implementation of the disparity filter from [Serrano et al.](https://doi.org/10.
 
 The original graph must be a [NetworkX](https://networkx.org/) `Graph` of `DiGraph` object.
 
-The optimal 
+The optimal value for `alpha` corresponds to the threshold that minimizes the number of edges while maximizing the number of vertices. Use `plot_optimal_alpha()` to obtain an illustration.
 
 ```python
 import disparity_filter_weighted_graphs as dfil
@@ -19,7 +19,7 @@ graph = nx.read_weighted_edgelist('path_to_file', create_using=nx.Graph())
 # Compute the 'alpha' value for each edge.
 dfil.compute_alpha(graph)
 
-# Find the optimal value for alpha. This value corresponds to the thresholds that minimizes the number of edges while maximizing the number of vertices. The dataframe used to find the optimal value for alpha is saves to `finding_optimal_alpha.csv.zip`.
+# Find the optimal value for alpha. The dataframe used to find the optimal value for alpha is saves to `finding_optimal_alpha.csv.zip`.
 dfil.find_optimal_alpha(graph, save_optimal_alpha_data=True)
 
 # Plot the position of the optimal value for alpha.
