@@ -19,7 +19,8 @@ graph = nx.read_weighted_edgelist('path_to_file', create_using=nx.Graph())
 # Compute the 'alpha' value for each edge.
 dfil.compute_alpha(graph)
 
-# Find the optimal value for alpha. The dataframe used to find the optimal value for alpha is saves to `finding_optimal_alpha.csv.zip`.
+# Find the optimal value for alpha. The dataframe used to find the optimal
+#   value for alpha is saved to `finding_optimal_alpha.csv.zip`.
 dfil.find_optimal_alpha(graph, save_optimal_alpha_data=True)
 
 # Plot the position of the optimal value for alpha.
