@@ -1,6 +1,7 @@
 **.DS_Store
 **.jupyter
 **finding_optimal_alpha.*
+local_tests.ipynb
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/python
