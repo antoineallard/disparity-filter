@@ -3,6 +3,7 @@
 - removed the module
 - now uses the analytic expression instead of numerical integration
 - corrected a mistake where the second alpha_ij overwrites the first one in undirected graphs
+- now adds the alpha values to the original graph as edge attributes instead of creating a new graph
 
 
 ## Version 0.9
