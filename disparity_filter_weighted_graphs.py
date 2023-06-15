@@ -215,7 +215,7 @@ def find_optimal_alpha(G, save_optimal_alpha_data=False, method='elbow', weight=
 
     if G_copy.is_directed():
         for u, v in G_copy.edges():
-            G_copy[u][v]["alpha"] = min(G[u][v]["alpha_in"], G[u][v]["alpha_in"])
+            G_copy[u][v]["alpha"] = min(G[u][v]["alpha_in"], G[u][v]["alpha_out"])
 
     nb_vertices = G.number_of_nodes()
     nb_edges = G.number_of_edges()
